@@ -6,7 +6,7 @@ const getAllStates = async (req, res) => {
     var keys = ["code"];
     var values = ["HI", "AK"];
     if (!states)
-        return res.status(400).json({ message: "No states found." });
+        return res.status(400).json({ 'message': "No states found." });
     if (req.query.contig === 'false') {
         let result = states.filter(function (e) {
             return keys.every(function (a) {
@@ -31,10 +31,10 @@ const getAllStates = async (req, res) => {
       return res.status(400).json({'message': 'A state code is required at minimum.'});
     }
     if (!req?.body?.funfacts) {
-        return res.status(400).json({ message: "funfacts value is required" });
+        return res.status(400).json({ 'message': "State fun facts value required" });
     }
     if (!Array.isArray(req?.body?.funfacts)) {
-        return res.status(400).json({ message: "funfacts value must be an array" });
+        return res.status(400).json({ 'message': "State fun facts value must be an array" });
     }
     try {
         await State.updateOne({
@@ -53,12 +53,15 @@ const getAllStates = async (req, res) => {
 
 
 const updateStateFact = async (req, res) => {
-    if (req?.body?.index <1 || !req?.body.index || !req.body.funfact) {
-        return res.status(400).json({ message: "index and funfact parameters are required and index should be greater than 0. " });
+    if (req?.body?.index <1 || !req?.body.index) {
+        return res.status(400).json({ 'message': "State fun fact index value required" });
+    }
+    else if (req?.body?.index <1 || !req?.body.funfact){
+        return res.status(400).json({ 'message': "State fun fact value required" });
     }
     const input = req?.params?.state.toUpperCase();
     if (!input || input.length !== 2) {
-        return res.status(400).json({'message': 'A state code is required at minimum.'});
+        return res.status(400).json({'message': `No Fun Facts found for ${input}`});
     }
     const index = req?.body?.index-1;
     const result = await State.findOne({ stateCode: input }).exec();
@@ -82,11 +85,11 @@ const updateStateFact = async (req, res) => {
 
 const deleteStateFact = async (req, res) => {
     if (req?.body?.index < 1 || !req?.body.index) {
-        return res.status(400).json({ 'message': "Index parameter is required and should be greater than 0. " });
+        return res.status(400).json({ 'message': "State fun fact index value required" });
     }
     const input = req?.params?.state.toUpperCase();
     if (!input || input.length !== 2) {
-        return res.status(400).json({ 'message': 'A state code is required at minimum.'});
+        return res.status(400).json({ 'message': `No Fun Facts found for ${input}`});
     }
 
     const index = req?.body?.index - 1;
@@ -164,7 +167,7 @@ const getData = async (req, res) => {
     const states = await statesData;
     const input = req?.params?.state.toUpperCase();
         if (!input || input.length !== 2) {
-            return res.status(400).json({ 'message': 'A state code is required at minimum.' });
+            return res.status(400).json({ 'message': 'Invalid state abbreviation parameter' });
         }
 
     var keys = ["code"];
@@ -175,7 +178,7 @@ const getData = async (req, res) => {
     })
 
     if (!result || result.length === 0) {
-        return res.status(400).json({ message: "Invalid state abbreviation parameter" });
+        return res.status(400).json({ 'message': "Invalid state abbreviation parameter" });
 
     }
     const mongo = await State.findOne({ stateCode: input }).exec();
