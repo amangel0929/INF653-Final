@@ -111,12 +111,9 @@ const deleteStateFact = async (req, res) => {
 }
 
 const getState = async (req, res) => {
-    try {
-        const result = await getData(req, res);
-        res.json(result);
-    } catch (error) {
-        console.log(error);
-    }
+    let result = await getData(req, res);
+    result = result[0];
+    res.json(result);
 }
 
 
@@ -178,9 +175,7 @@ const getData = async (req, res) => {
     })
 
     if (!result || result.length === 0) {
-        return res
-           .status(400)
-           .json({ message: "No State matches State Abbreviation" });
+        return res.status(400).json({ message: "Invalid state abbreviation parameter" });
 
     }
     const mongo = await State.findOne({ stateCode: input }).exec();
@@ -189,8 +184,10 @@ const getData = async (req, res) => {
             mongo.funfacts;
 
         result[0].funfacts = funFactRes;
+        result.toString();
         return result;
     } else
+        result.toString();
         return result;
 }
 

@@ -5,12 +5,12 @@ const statesController = require('../../controllers/statesController');
 router.route('/')
     .get(statesController.getAllStates)
     .post(statesController.createNewStateFact)
-    .put(statesController.updateStateFact)
+    .patch(statesController.updateStateFact)
     .delete(statesController.deleteStateFact);
 
 router.route('/:state')
     .get(statesController.getState);
-router.route('/:state/capitol')
+router.route('/:state/capital')
     .get(statesController.getStateCapital);
 router.route('/:state/nickname')
     .get(statesController.getStateNickname);
