@@ -2,7 +2,9 @@ const State = require("../model/State");
 const statesData = require("../model/statesData.json");
 
 const getAllStates = async (req, res) => {
-    const states = await statesData;
+    const allStates = await statesData;
+    const mongoFacts = await State.find();
+    const states = {allStates, mongoFacts};
     var keys = ["code"];
     var values = ["HI", "AK"];
     if (!states)
@@ -22,7 +24,7 @@ const getAllStates = async (req, res) => {
         res.json(result);
     } else {
         //need to merge mongo db results here
-        res.json(result);
+        res.json(states);
     }
 }
   
@@ -120,6 +122,13 @@ const getState = async (req, res) => {
     res.json(result);
 }
 
+const getStateFunfact = async (req, res) => {
+    const result = await getData(req, res);
+    let funfactRes = {
+        "funfact": result[0].funfacts
+    }
+    res.json(funfactRes);
+}
 
 const getStateCapital = async (req, res) => {
     const result = await getData(req, res);
@@ -201,6 +210,7 @@ module.exports = {
     updateStateFact,
     deleteStateFact,
     getState,
+    getStateFunfact,
     getStateCapital,
     getStateNickname,
     getStatePopulation,
