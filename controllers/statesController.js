@@ -2,9 +2,7 @@ const State = require("../model/State");
 const statesData = require("../model/statesData.json");
 
 const getAllStates = async (req, res) => {
-    const allStates = await statesData;
-    const mongoFacts = await State.find();
-    const states = {allStates, mongoFacts};
+    const states = await statesData;
     var keys = ["code"];
     var values = ["HI", "AK"];
     if (!states)
@@ -85,7 +83,7 @@ const updateStateFact = async (req, res) => {
         }
     }
 }
-//this does not actually delete
+
 const deleteStateFact = async (req, res) => {
     if (req?.body?.index < 1 || !req?.body.index) {
         return res.status(400).json({ 'message': "State fun fact index value required" });
