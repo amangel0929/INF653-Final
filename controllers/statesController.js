@@ -83,7 +83,7 @@ const updateStateFact = async (req, res) => {
         }
     }
 }
-
+//this does not actually delete
 const deleteStateFact = async (req, res) => {
     if (req?.body?.index < 1 || !req?.body.index) {
         return res.status(400).json({ 'message': "State fun fact index value required" });
