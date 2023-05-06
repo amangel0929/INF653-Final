@@ -2,7 +2,9 @@ const State = require("../model/State");
 const statesData = require("../model/statesData.json");
 
 const getAllStates = async (req, res) => {
-    const states = await statesData;
+    const allStates = await statesData;
+    const mongoFacts = await State.find();
+    const states = {allStates, mongoFacts};
     var keys = ["code"];
     var values = ["HI", "AK"];
     if (!states)
@@ -21,7 +23,8 @@ const getAllStates = async (req, res) => {
         })
         res.json(result);
     } else {
-        res.json(states);
+        //need to merge mongo db results here
+        res.json(result);
     }
 }
   
@@ -82,7 +85,7 @@ const updateStateFact = async (req, res) => {
         }
     }
 }
-
+//this does not actually delete
 const deleteStateFact = async (req, res) => {
     if (req?.body?.index < 1 || !req?.body.index) {
         return res.status(400).json({ 'message': "State fun fact index value required" });
@@ -95,7 +98,7 @@ const deleteStateFact = async (req, res) => {
     const index = req?.body?.index - 1;
     const result = await State.findOne({ stateCode: input }).exec();
 
-    if (index >= mongoResult.funfacts.length) {
+    if (index >= result.funfacts.length) {
         return res.status(400).json({ 'message': `No Fun Fact found at that index for ${input}` });
     } else {
         try {
