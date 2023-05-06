@@ -2,9 +2,7 @@ const State = require("../model/State");
 const statesData = require("../model/statesData.json");
 
 const getAllStates = async (req, res) => {
-    const allStates = await statesData;
-    const mongoFacts = await State.find();
-    const states = {allStates, mongoFacts};
+    const states = await statesData;
     var keys = ["code"];
     var values = ["HI", "AK"];
     if (!states)
